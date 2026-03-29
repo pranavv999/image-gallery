@@ -1,12 +1,10 @@
 import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function AnimatedBorder({ children }) {
   const containerRef = useRef(null);
   const pathRef = useRef(null);
+  const tweenRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useLayoutEffect(() => {
@@ -30,30 +28,40 @@ export default function AnimatedBorder({ children }) {
     if (width === 0 || height === 0 || !pathRef.current) return;
 
     const halfPerimeter = width + height;
+    
+    // Set initial state
+    gsap.set(pathRef.current, { strokeDashoffset: -halfPerimeter });
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(pathRef.current, 
-        { strokeDashoffset: -halfPerimeter }, 
-        { 
-          strokeDashoffset: 0, 
-          duration: 1.5, 
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          }
-        }
-      );
+      // Create a paused tween that we can play and reverse
+      tweenRef.current = gsap.to(pathRef.current, {
+        strokeDashoffset: 0, 
+        duration: 0.8, 
+        ease: 'power3.out',
+        paused: true
+      });
     });
 
-    return () => ctx.revert(); // clean up GSAP instance cleanly
+    return () => ctx.revert();
   }, [dimensions]);
+
+  const handleMouseEnter = () => {
+    if (tweenRef.current) tweenRef.current.play();
+  };
+
+  const handleMouseLeave = () => {
+    if (tweenRef.current) tweenRef.current.reverse();
+  };
 
   const { width, height } = dimensions;
 
   return (
-    <div ref={containerRef} className="relative w-full h-full group">
+    <div 
+      ref={containerRef} 
+      className="relative w-full h-full group"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {children}
       
       {width > 0 && height > 0 && (
@@ -68,7 +76,7 @@ export default function AnimatedBorder({ children }) {
             d={`M ${width/2},0 L ${width},0 L ${width},${height} L 0,${height} L 0,0 Z`}
             fill="none"
             stroke="black"
-            strokeWidth="2"
+            strokeWidth="3"
             strokeDasharray={`${(width+height)/2} ${(width+height)/2}`}
             strokeLinecap="square"
           />
