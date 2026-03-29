@@ -19,9 +19,9 @@ export default function Header() {
       </div>
 
       <nav className="flex space-x-8 items-center">
-        <ScrambleLink href="#">{'{ About }'}</ScrambleLink>
-        <ScrambleLink href="#">{'{ Projects }'}</ScrambleLink>
-        <ScrambleLink href="#">{'{ Contacts }'}</ScrambleLink>
+        <ScrambleLink href="/about">{'{ About }'}</ScrambleLink>
+        <ScrambleLink href="/projects">{'{ Projects }'}</ScrambleLink>
+        <ScrambleLink href="/contacts">{'{ Contacts }'}</ScrambleLink>
       </nav>
     </header>
   );

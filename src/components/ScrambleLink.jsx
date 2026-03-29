@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 const chars = '!<>-_\\\\/[]{}—=+*^?#_';
 
-const ScrambleLink = ({ href = "#", children }) => {
+const ScrambleLink = ({ href = "#", target, children }) => {
   const [text, setText] = useState(children);
   const internalText = children.toString();
   const timerRef = useRef(null);
@@ -23,7 +24,7 @@ const ScrambleLink = ({ href = "#", children }) => {
       if(iteration >= internalText.length) {
         clearInterval(timerRef.current);
       }
-      iteration += 1 / 2; // Speed of resolving
+      iteration += 1 / 2;
     }, 40);
   };
 
@@ -32,15 +33,32 @@ const ScrambleLink = ({ href = "#", children }) => {
     setText(internalText);
   };
 
+  const cssClasses = "inline-block px-3 py-1 font-mono text-sm tracking-wider transition-colors duration-300 hover:bg-black hover:text-white text-black";
+
+  if (target === "_blank") {
+    return (
+      <a 
+        href={href}
+        target={target}
+        rel="noopener noreferrer"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={cssClasses}
+      >
+        {text}
+      </a>
+    );
+  }
+
   return (
-    <a 
-      href={href}
+    <Link 
+      to={href}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="inline-block px-3 py-1 font-mono text-sm tracking-wider transition-colors duration-300 hover:bg-black hover:text-white text-black"
+      className={cssClasses}
     >
       {text}
-    </a>
+    </Link>
   );
 };
 
