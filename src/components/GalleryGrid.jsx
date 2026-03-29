@@ -17,7 +17,7 @@ const items = [
 
 export default function GalleryGrid() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16 px-8 pb-16">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-x-24 gap-y-32 px-16 md:px-32 pb-32">
       {items.map((item) => {
         let aspectRatioClass = 'aspect-[4/3]';
         if (item.type === 'portrait') aspectRatioClass = 'aspect-[3/4]';
@@ -27,11 +27,14 @@ export default function GalleryGrid() {
         return (
           <div 
             key={item.id} 
-            className={`w-full relative z-10 bg-gray-200 ${aspectRatioClass} ${item.offset}`}
+            className={`w-full relative z-10 ${aspectRatioClass} ${item.offset}`}
           >
             <AnimatedBorder>
-              {/* Image element should be here in the future, covering the entire relative container */}
-              <div className="w-full h-full bg-transparent"></div>
+              <img 
+                src={`/gallery/${item.type}.jpg`} 
+                alt={`Portfolio ${item.type}`} 
+                className="w-full h-full object-cover" 
+              />
             </AnimatedBorder>
           </div>
         );
