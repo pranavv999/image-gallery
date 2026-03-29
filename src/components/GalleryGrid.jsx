@@ -1,4 +1,5 @@
 import React from 'react';
+import AnimatedBorder from './AnimatedBorder';
 
 const items = [
   { id: 1, type: 'portrait', offset: 'mt-0' },
@@ -26,9 +27,12 @@ export default function GalleryGrid() {
         return (
           <div 
             key={item.id} 
-            className={`w-full relative z-10 bg-gray-200 overflow-hidden ${aspectRatioClass} ${item.offset}`}
+            className={`w-full relative z-10 bg-gray-200 ${aspectRatioClass} ${item.offset}`}
           >
-            {/* We use bg-gray-200 as the placeholder block. When you have real images, replace this bg and insert <img /> elements */}
+            <AnimatedBorder>
+              {/* Image element should be here in the future, covering the entire relative container */}
+              <div className="w-full h-full bg-transparent"></div>
+            </AnimatedBorder>
           </div>
         );
       })}
