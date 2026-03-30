@@ -4,6 +4,7 @@ import ProjectCarousel from '../components/ProjectCarousel';
 
 export default function Projects() {
   const [progress, setProgress] = useState(0);
+  const [activeCategory, setActiveCategory] = useState('{ Wedding }');
 
   const categories = [
     '{ Wedding }',
@@ -30,7 +31,8 @@ export default function Projects() {
           <div className="w-full h-full flex justify-between items-stretch">
             {categories.map((cat) => (
               <div key={cat} className="flex flex-col items-center group pointer-events-auto">
-                <BlinkLink href="/projects">{cat}</BlinkLink>
+                {/* Dynamically assign active highlighting from child event triggers */}
+                <BlinkLink href="/projects" isActive={cat === activeCategory}>{cat}</BlinkLink>
                 <div className="w-[1px] flex-grow bg-gray-200 mt-6 min-h-[40vh] transition-colors duration-500 group-hover:bg-gray-400"></div>
               </div>
             ))}
@@ -43,7 +45,7 @@ export default function Projects() {
       <div className="w-full flex-1 flex flex-col mt-20 max-w-screen-2xl mx-auto relative z-10 pointer-events-none">
 
         <div className="flex-1 w-full pointer-events-auto">
-          <ProjectCarousel onProgress={setProgress} />
+          <ProjectCarousel onProgress={setProgress} onActiveCategory={setActiveCategory} />
         </div>
       </div>
 

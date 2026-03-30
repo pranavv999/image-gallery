@@ -1,14 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-const BlinkLink = ({ href = "#", children }) => {
+const BlinkLink = ({ href = "#", isActive = false, children }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isBlack, setIsBlack] = useState(false);
   const timerRef = useRef(null);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    // Initial color hit
     setIsBlack(true);
     clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
@@ -22,8 +21,13 @@ const BlinkLink = ({ href = "#", children }) => {
     setIsBlack(false);
   };
 
-  // If hovered, toggle between black and gray. If not hovered, always gray.
-  const textColorClass = isHovered && isBlack ? 'text-black' : 'text-gray-400';
+  // If active, force black. Otherwise, fallback to hover rules.
+  let textColorClass = 'text-gray-400';
+  if (isActive) {
+    textColorClass = 'text-black';
+  } else if (isHovered && isBlack) {
+    textColorClass = 'text-black';
+  }
 
   return (
     <Link 
