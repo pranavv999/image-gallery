@@ -3,16 +3,16 @@ import ScrambleLink from './ScrambleLink';
 
 // Using portrait and square placeholders per instructions
 const carouselItems = [
-  { id: 1, category: '{ Wedding }', type: 'portrait', title: '{ Portrait 01 }' },
-  { id: 2, category: '{ Wedding }', type: 'square', title: '{ Square 01 }' },
-  { id: 3, category: '{ Engagement }', type: 'portrait', title: '{ Portrait 02 }' },
-  { id: 4, category: '{ Engagement }', type: 'portrait', title: '{ Portrait 03 }' },
-  { id: 5, category: '{ Birthday }', type: 'square', title: '{ Square 02 }' },
-  { id: 6, category: '{ Birthday }', type: 'portrait', title: '{ Portrait 04 }' },
-  { id: 7, category: '{ Maternity }', type: 'square', title: '{ Square 02 }' },
-  { id: 8, category: '{ Maternity }', type: 'portrait', title: '{ Portrait 04 }' },
-  { id: 9, category: '{ Other }', type: 'square', title: '{ Square 02 }' },
-  { id: 10, category: '{ Other }', type: 'portrait', title: '{ Portrait 04 }' },
+  { id: 1, category: '{ Wedding }', type: 'portrait', title: 'Portrait 01' },
+  { id: 2, category: '{ Wedding }', type: 'square', title: 'Square 01' },
+  { id: 3, category: '{ Engagement }', type: 'portrait', title: 'Portrait 02' },
+  { id: 4, category: '{ Engagement }', type: 'portrait', title: 'Portrait 03' },
+  { id: 5, category: '{ Birthday }', type: 'square', title: 'Square 02' },
+  { id: 6, category: '{ Birthday }', type: 'portrait', title: 'Portrait 04' },
+  { id: 7, category: '{ Maternity }', type: 'square', title: 'Square 02' },
+  { id: 8, category: '{ Maternity }', type: 'portrait', title: 'Portrait 04' },
+  { id: 9, category: '{ Other }', type: 'square', title: 'Square 02' },
+  { id: 10, category: '{ Other }', type: 'portrait', title: 'Portrait 04' },
 ];
 
 export default function ProjectCarousel({ onProgress, onActiveCategory }) {
@@ -32,7 +32,7 @@ export default function ProjectCarousel({ onProgress, onActiveCategory }) {
     // Calculate overlapping card logic
     const absoluteScannerX = scrollLeft + (currentProgress * clientWidth);
     const childrenNodes = Array.from(scrollRef.current.children);
-    
+
     for (let child of childrenNodes) {
       if (absoluteScannerX >= child.offsetLeft && absoluteScannerX <= child.offsetLeft + child.offsetWidth) {
         const cat = child.getAttribute('data-category');
@@ -86,18 +86,22 @@ export default function ProjectCarousel({ onProgress, onActiveCategory }) {
         {carouselItems.map((item) => {
           const isPortrait = item.type === 'portrait';
           const aspectRatioClass = isPortrait ? 'aspect-[3/4]' : 'aspect-square';
-          // Make square images noticeably shorter than portrait ones
-          const heightClass = isPortrait ? 'h-[55vh]' : 'h-[40vh]';
+          // Adjusted height to allow more breathing room for the footer text 
+          const heightClass = isPortrait ? 'h-[46vh]' : 'h-[32vh]';
 
           return (
-            <div 
-              key={item.id} 
+            <div
+              key={item.id}
               data-category={item.category}
-              className={`snap-center shrink-0 ${heightClass} flex flex-col items-center gap-4`}
+              // Retro Polaroid Frame Design
+              className="snap-center shrink-0 bg-white p-4 pb-8 flex flex-col items-center shadow-xl border border-gray-100"
             >
-              <ScrambleLink href="#">{item.title}</ScrambleLink>
-              <div className={`h-full bg-gray-200 ${aspectRatioClass}`}>
+              <div className={`bg-gray-200 ${heightClass} ${aspectRatioClass}`}>
                 {/* Placeholder for the real image */}
+              </div>
+
+              <div className="mt-6">
+                <ScrambleLink href="#">{item.title}</ScrambleLink>
               </div>
             </div>
           );
